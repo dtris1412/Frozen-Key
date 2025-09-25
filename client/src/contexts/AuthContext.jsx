@@ -47,7 +47,7 @@ export const AuthProvider = ({ children }) => {
       if (remember) {
         localStorage.setItem("rememberLogin", "true");
       }
-      return userData;
+      return userData; // Đảm bảo return userData
     } catch (err) {
       throw new Error(
         err.response?.data?.message || "Đăng nhập thất bại, vui lòng thử lại!"
@@ -55,8 +55,51 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  const register = async (name, email, password) => {
+    try {
+      const res = await axios.post("http://localhost:8080/api/register", {
+        name,
+        email,
+        password,
+      });
+      const userData = res.data.user;
+      const token = res.data.token;
+
+      setIsAuthenticated(true);
+      setUser(userData);
+
+      localStorage.setItem("isLoggedIn", true);
+      localStorage.setItem("currentUser", JSON.stringify(userData));
+      localStorage.setItem("token", token);
+
+      return userData;
+    } catch (err) {
+      throw new Error(
+        err.response?.data?.message || "Đăng ký thất bại, vui lòng thử lại!"
+      );
+    }
+  };
+
+  const logout = () => {
+    setIsAuthenticated(false);
+    setUser(null);
+    localStorage.removeItem("isLoggedIn");
+    localStorage.removeItem("currentUser");
+    localStorage.removeItem("token");
+  };
+
+  const value = {
+    isAuthenticated,
+    user,
+    loading,
+    login,
+    register,
+    logout,
+  };
   return (
-    <AuthContext.Provider value={{ isAuthenticated, user, loading, login }}>
+    <AuthContext.Provider
+      value={{ isAuthenticated, user, loading, login, register }}
+    >
       {children}
     </AuthContext.Provider>
   );

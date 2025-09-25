@@ -1,36 +1,36 @@
 import { Model } from "sequelize";
 
 export default (sequelize, DataTypes) => {
-  class User extends Model {
+  class Cart extends Model {
     static associate(models) {
       // define association here
     }
   }
-  User.init(
+  Cart.init(
     {
-      user_id: {
+      cart_id: {
         type: DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: true,
       },
-      name: DataTypes.STRING,
-      email: DataTypes.STRING,
-      password: DataTypes.STRING,
-      phone: DataTypes.STRING,
-      roles: {
-        type: DataTypes.ENUM("user", "admin"),
-        defaultValue: "user",
-      },
+
       created_at: DataTypes.DATE,
-      updated_at: DataTypes.DATE,
+      user_id: {
+        type: DataTypes.INTEGER,
+        foreginKey: true,
+        references: {
+          model: "Users",
+          key: "user_id",
+        },
+      },
     },
     {
       sequelize,
-      modelName: "User",
-      tableName: "users",
+      modelName: "Cart",
+      tableName: "Carts",
       freezeTableName: true,
       timestamps: false, // Nếu bạn không dùng createdAt/updatedAt mặc định
     }
   );
-  return User;
+  return Cart;
 };

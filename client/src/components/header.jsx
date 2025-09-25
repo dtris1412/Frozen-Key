@@ -69,9 +69,6 @@ const Header = ({ setCurrentPage }) => {
           <a href="#new" className="nav-item">
             Sản phẩm mới
           </a>
-          <button className="admin-btn" onClick={() => setCurrentPage("admin")}>
-            Admin
-          </button>
         </nav>
       </div>
     </header>

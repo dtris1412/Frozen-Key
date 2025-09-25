@@ -1,4 +1,8 @@
-import { login as loginService } from "../services/authService.js";
+import {
+  login as loginService,
+  register as registerService,
+} from "../services/authService.js";
+import { createCart as createCartService } from "../services/cartService.js";
 
 const login = async (req, res) => {
   try {
@@ -14,4 +18,20 @@ const login = async (req, res) => {
   }
 };
 
-export { login };
+const register = async (req, res) => {
+  try {
+    const result = await registerService(
+      req.body.name,
+      req.body.email,
+      req.body.password
+    );
+    //create cart for new user
+    await createCartService(result.user.user_id); //get the latest user_id
+
+    res.status(201).json(result);
+  } catch (err) {
+    console.error("Register error: ", err);
+    res.status(500).json({ mess: "Internal server error" });
+  }
+};
+export { login, register };

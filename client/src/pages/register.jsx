@@ -1,7 +1,11 @@
 import React, { useState } from "react";
 import "../styles/auth.css";
+import { useAuth } from "../contexts/AuthContext";
+import { Link, useNavigate } from "react-router-dom";
 
 const Register = ({ setCurrentPage }) => {
+  const { register } = useAuth();
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     username: "",
     email: "",
@@ -9,7 +13,9 @@ const Register = ({ setCurrentPage }) => {
     confirmPassword: "",
     phone: "",
     avatar: null,
+    roles: "user",
   });
+  const [error, setError] = useState("");
 
   const handleInputChange = (e) => {
     if (e.target.type === "file") {
@@ -25,16 +31,26 @@ const Register = ({ setCurrentPage }) => {
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setError("");
+    console.log("Submit register:", formData); // Thêm dòng này
     if (formData.password !== formData.confirmPassword) {
-      alert("Mật khẩu xác nhận không khớp!");
+      setError("Mật khẩu xác nhận không khớp!");
       return;
     }
-    // Handle registration logic here
-    console.log("Registration attempt:", formData);
-    alert("Đăng ký thành công!");
-    setCurrentPage("home");
+    try {
+      await register(
+        formData.username,
+        formData.email,
+        formData.password,
+        formData.phone
+      );
+      alert("Đăng ký thành công!");
+      setCurrentPage ? setCurrentPage("home") : navigate("/home");
+    } catch (err) {
+      setError(err.message || "Đăng ký thất bại!");
+    }
   };
 
   return (
@@ -163,7 +179,7 @@ const Register = ({ setCurrentPage }) => {
                 <a href="#privacy">Chính sách bảo mật</a>
               </label>
             </div>
-
+            {error && <div className="auth-error">{error}</div>}
             <button type="submit" className="auth-submit-btn">
               <span>Đăng ký</span>
               <div className="btn-crystals">
@@ -179,7 +195,9 @@ const Register = ({ setCurrentPage }) => {
               Đã có tài khoản?
               <button
                 className="switch-auth-btn"
-                onClick={() => setCurrentPage("login")}
+                onClick={() =>
+                  setCurrentPage ? setCurrentPage("login") : navigate("/login")
+                }
               >
                 Đăng nhập ngay
               </button>
@@ -189,7 +207,9 @@ const Register = ({ setCurrentPage }) => {
 
         <button
           className="back-home-btn"
-          onClick={() => setCurrentPage("home")}
+          onClick={() =>
+            setCurrentPage ? setCurrentPage("home") : navigate("/home")
+          }
         >
           ← Về trang chủ
         </button>

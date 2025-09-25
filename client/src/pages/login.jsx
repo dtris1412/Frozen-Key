@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useAuth } from "../contexts/AuthContext"; // Sửa lại import
 import "../styles/auth.css";
-
+import Toast from "../components/toast.jsx";
 const Login = ({ setCurrentPage }) => {
   const [formData, setFormData] = useState({
     email: "",
@@ -21,10 +21,15 @@ const Login = ({ setCurrentPage }) => {
     e.preventDefault();
     setError("");
     try {
-      await login(formData.email, formData.password);
-      setCurrentPage("home");
+      const userData = await login(formData.email, formData.password); // Thêm const userData =
+      const user = userData.roles;
+      console.log("Logged in user:", userData); // Kiểm tra dữ liệu người dùng
+      if (userData.roles === "admin") {
+        setCurrentPage("admin");
+      } else {
+        setCurrentPage("home");
+      }
     } catch (err) {
-      console.error("login error: ", err);
       setError("Email hoặc mật khẩu không đúng!");
     }
   };
