@@ -10,7 +10,11 @@ const ProductCard = ({ product, onAddToCart }) => {
   return (
     <div className="product-card">
       <div className="product-image">
-        <img src={product.image} alt={product.name} />
+        <img
+          src={`/assets/product_images/${product.image}`}
+          alt={product.name}
+        />
+
         <div className="product-overlay">
           {product.isHot && <span className="badge hot">🔥 Hot</span>}
           {product.isNew && <span className="badge new">✨ New</span>}

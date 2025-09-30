@@ -4,10 +4,10 @@ import "../styles/categoryBar.css";
 const CategoryBar = ({ activeCategory, setActiveCategory }) => {
   const categories = [
     { id: "game", name: "Game", icon: "🎮" },
-    { id: "education", name: "Học tập", icon: "📚" },
-    { id: "work", name: "Làm việc", icon: "💼" },
-    { id: "utilities", name: "Tiện ích", icon: "🔧" },
-    { id: "ai", name: "AI", icon: "🤖" },
+    { id: "software", name: "Software", icon: "📚" },
+    // { id: "work", name: "Làm việc", icon: "💼" },
+    { id: "dlc", name: "DLC", icon: "🔧" },
+    { id: "all", name: "ALL", icon: "🤖" },
   ];
 
   return (

@@ -9,7 +9,7 @@
   display: flex;
   flex-direction: column;
   height: 100%;
-  max-width: 320px;
+  max-width: 100%;
   margin: 0 auto;
 }
 
@@ -22,8 +22,9 @@
 
 /* Product Image */
 .product-image {
+  width: 100%;
   position: relative;
-  height: 200px;
+  height: 220px;
   overflow: hidden;
 }
 

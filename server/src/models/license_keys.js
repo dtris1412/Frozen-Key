@@ -1,36 +1,37 @@
 import { Model } from "sequelize";
 
 export default (sequelize, DataTypes) => {
-  class Cart extends Model {
+  class License_Key extends Model {
     static associate(models) {
       // define association here
     }
   }
-  Cart.init(
+  License_Key.init(
     {
-      cart_id: {
+      key_id: {
         type: DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: true,
       },
-
-      created_at: DataTypes.DATE,
-      user_id: {
+      key_code: DataTypes.STRING,
+      is_used: DataTypes.BOOLEAN,
+      assigned_to: DataTypes.INTEGER,
+      product_id: {
         type: DataTypes.INTEGER,
         foreginKey: true,
         references: {
-          model: "User",
-          key: "user_id",
+          model: "Product",
+          key: "product_id",
         },
       },
     },
     {
       sequelize,
-      modelName: "Cart",
-      tableName: "Carts",
+      modelName: "License_Key",
+      tableName: "license_keys",
       freezeTableName: true,
       timestamps: false, // Nếu bạn không dùng createdAt/updatedAt mặc định
     }
   );
-  return Cart;
+  return License_Key;
 };
